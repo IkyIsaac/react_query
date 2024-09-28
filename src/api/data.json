@@ -1,0 +1,27 @@
+{
+    "posts":[
+        {
+            "id":1,
+            "title":"His mother had always taught him",
+            "tags":["history","crime"]
+        },
+        {
+            "id":2,
+            "title":"He was an expert but not a discipline",
+            "tags":["french","fiction","english"]
+        }
+        
+    ],
+    "tags":[
+        "classic",
+        "crime",
+        "english",
+        "fiction",
+        "french",
+        "history",
+        "love",
+        "magical",
+        "mystery"
+    ]
+    
+}
