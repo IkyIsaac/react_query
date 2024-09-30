@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query"
-import { fetchPosts } from "../api/api"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { addPost, fetchPosts, fetchTags } from "../api/api"
 
 const PostLists = () => {
     const { data: postData, isError, isLoading, error } = useQuery({
@@ -8,6 +8,17 @@ const PostLists = () => {
     });
     console.log(postData)
     // Handle loading state
+
+    const {data:tagsData}=useQuery({
+        queryKey:["tags"],
+        queryFn: fetchTags,
+    })
+
+
+    const {mutate,isError:isPostError,isPending,error:postError, reset}=useMutation({
+        mutationFn: addPost,
+    })
+
     if (isLoading) {
         return <p>Loading...</p>;
     }
@@ -18,18 +29,47 @@ const PostLists = () => {
         return <p>Error: {error.message}</p>;
     }
 
+    const handleSubmit= (e)=>{
+        e.preventDefault()
+        const formData= new FormData(e.target)
+        const title=formData.get("title")
+        const tags=Array.from(formData.keys()).filter((key)=>formData.get(key)==="on")
+        if(!title || !tags) return;
+          mutate({id:postData.length+1,title,tags})
+          e.target.reset()
+    }
+
     
     return (
         <div className="container">
-            {postData.map((post) => (
+            <form onSubmit={handleSubmit}>
+                <input 
+                type="text"
+                placeholder="Enter your post.."
+                className="postbox"
+                name="title"
+                />
+                <div className="tags">
+                    {tagsData?.map((tag)=>{
+                        return (
+                            <div key={tag}>
+                                <input name={tag} id={tag} type="checkbox"/>
+                                <label htmlFor={tag}>{tag}</label>
+                            </div>
+                        )
+                    })}
+                </div>
+                    <button>Post</button>
+            </form>
+            {postData.map((post) => 
+            {return (
                 <div key={post.id} className="post">
                     <div>{post.title}</div>
-                    {/* Map over post tags if they exist */}
                     {post.tags?.map((tag) => (
                         <span key={tag}>{tag}</span>
                     ))}
                 </div>
-            ))}
+            )})}
         </div>
     );
 };

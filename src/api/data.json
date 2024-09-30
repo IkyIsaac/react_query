@@ -11,8 +11,7 @@
             "tags":["french","fiction","english"]
         }
         
-    ],
-    "tags":[
+    ],"tags":[
         "classic",
         "crime",
         "english",
@@ -22,6 +21,6 @@
         "love",
         "magical",
         "mystery"
-    ]
+    ]  
     
 }
